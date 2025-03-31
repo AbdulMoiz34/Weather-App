@@ -23,7 +23,6 @@ document.addEventListener('click', (e) => {
     }
 });
 
-
 // get weather data from open weather API
 const getData = async (loc) => {
     try {
@@ -71,7 +70,6 @@ const getCountryName = (countryCode) => {
 
 // It will display weather data
 const displayWeather = ({ city, country, temp, temp_min, temp_max, humidity, speed, icon, description, cloud, timezone }) => {
-    console.log(timezone);
     const countryEl = document.getElementById("city");
     const mainTempEl = document.querySelector(".main-temp");
     const iconEl = document.querySelector(".weather-icon>img");
