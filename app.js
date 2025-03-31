@@ -87,7 +87,7 @@ const main = async (current = inp.value) => {
     } catch (err) {
         document.getElementById("loader").style.display = "none";
         document.querySelector(".detail-section").style.opacity = "100%";
-        document.querySelector(".detail-section").innerHTML = `<div style="text-align:center;">something went wrong.</div>`;
+        document.querySelector(".detail-section").append(`<div style="text-align:center;">something went wrong.</div>`);
     }
 }
 
