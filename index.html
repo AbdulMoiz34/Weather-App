@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Moment js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 
 <body>
@@ -95,27 +97,7 @@
         </div>
     </div>
 
-    <script>
-        // Toggle mobile weather details panel
-        const mobileToggle = document.querySelector('.mobile-toggle');
-        const weatherDetails = document.querySelector('.weather-details');
-
-        mobileToggle.addEventListener('click', () => {
-            weatherDetails.classList.toggle('active');
-        });
-
-        // Close panel when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) {
-                const isToggleButton = e.target.closest('.mobile-toggle');
-                const isDetailsPanel = e.target.closest('.weather-details');
-
-                if (!isToggleButton && !isDetailsPanel && weatherDetails.classList.contains('active')) {
-                    weatherDetails.classList.remove('active');
-                }
-            }
-        });
-    </script>
+   
     <script src="app.js"></script>
 </body>
 
