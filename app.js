@@ -26,7 +26,7 @@ const getData = async (loc) => {
         console.log(data);
         return { city, country, temp, temp_min, temp_max, humidity, speed, main, icon, description, cloud, timezone, dt };
     } catch (err) {
-        console.log(err.message);
+        alert("Please check your internet connection.");
     }
 }
 
@@ -85,9 +85,10 @@ const main = async (current = inp.value) => {
         document.querySelector(".detail-section").style.opacity = "100%";
 
     } catch (err) {
+        console.log(err.message);
+        alert(`${inp.value} not found.`);
         document.getElementById("loader").style.display = "none";
         document.querySelector(".detail-section").style.opacity = "100%";
-        document.querySelector(".detail-section").append(`<div style="text-align:center;">something went wrong.</div>`);
     }
 }
 
