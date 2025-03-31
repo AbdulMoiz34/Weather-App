@@ -1,4 +1,4 @@
-const API_KEY = "33dd26113d18b9f790ac0cc69bdc0301";
+const API_KEY = "1125ff8e0c97c5318ef190d9ef8df86b";
 const inp = document.getElementById("location-input");
 
 const getData = async (loc) => {
@@ -26,7 +26,7 @@ const getData = async (loc) => {
         console.log(data);
         return { city, country, temp, temp_min, temp_max, humidity, speed, main, icon, description, cloud, timezone, dt };
     } catch (err) {
-        alert("Please check your internet connection.");
+        console.log(err);
     }
 }
 
@@ -38,7 +38,6 @@ const currentLocation = () => {
                 longitude: position.coords.longitude
             });
         }, err => reject(err));
-
     });
 }
 
@@ -68,22 +67,18 @@ const displayWeather = ({ city, country, temp, temp_min, temp_max, humidity, spe
     weatherStatus.innerText = description;
     console.log(dt);
     console.log(timezone);
-    console.log(getLocalTime(dt, timezone));
+    dateEl.innerHTML = ``;
 }
 
-const getLocalTime = (timestamp, timezoneOffset) => {
-    const localTime = new Date((timestamp + timezoneOffset) * 1000);
-    return localTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-};
 const main = async (current = inp.value) => {
     try {
         document.getElementById("loader").style.display = "block";
         document.querySelector(".detail-section").style.opacity = "0%";
         const data = await getData(current);
+        console.log(data);
         displayWeather(data);
         document.getElementById("loader").style.display = "none";
         document.querySelector(".detail-section").style.opacity = "100%";
-
     } catch (err) {
         console.log(err.message);
         alert(`${inp.value} not found.`);
