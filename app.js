@@ -67,7 +67,9 @@ const displayWeather = ({ city, country, temp, temp_min, temp_max, humidity, spe
     weatherStatus.innerText = description;
     console.log(dt);
     console.log(timezone);
-    dateEl.innerHTML = ``;
+    setInterval(() => {
+        dateEl.innerHTML = `${new Date().toDateString()}, ${new Date().toLocaleTimeString()}`;
+    }, 1000);
 }
 
 const main = async (current = inp.value) => {
@@ -86,5 +88,4 @@ const main = async (current = inp.value) => {
         document.querySelector(".detail-section").style.opacity = "100%";
     }
 }
-
 main(true);
