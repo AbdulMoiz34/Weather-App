@@ -35,6 +35,10 @@ const getData = async (loc) => {
         }
 
         const res = await fetch(api);
+        const data = await res.json();
+        if (data.message) {
+            throw new Error(data.message);
+        }
         const { name: city,
             clouds: { all: cloud },
             sys: { country: countryCode },
@@ -43,11 +47,11 @@ const getData = async (loc) => {
             weather: [{ main, icon, description }],
             timezone,
             dt,
-            ...data
-        } = await res.json();
+        } = data;
         const country = getCountryName(countryCode);
         return { city, country, temp, temp_min, temp_max, humidity, speed, main, icon, description, cloud, timezone, dt };
     } catch (err) {
+        throw new Error(err);
     }
 }
 
@@ -59,7 +63,7 @@ const currentLocation = () => {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             });
-        }, err => reject(err));
+        }, err => reject("please allow location"));
     });
 }
 
@@ -160,7 +164,7 @@ const main = async (current = inp.value) => {
         document.getElementById("loader").style.display = "none";
         document.querySelector(".detail-section").style.opacity = "100%";
     } catch (err) {
-        alert(`${inp.value} not found.`);
+        alert(err.message);
         document.getElementById("loader").style.display = "none";
         document.querySelector(".detail-section").style.opacity = "100%";
     }
