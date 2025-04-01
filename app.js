@@ -28,6 +28,7 @@ const getData = async (loc) => {
     try {
         let api;
         if (loc === true) {
+            debugger;
             const { longitude, latitude } = await currentLocation();
             api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`;
         } else {
@@ -36,6 +37,8 @@ const getData = async (loc) => {
 
         const res = await fetch(api);
         const data = await res.json();
+        debugger;
+
         if (data.message) {
             throw new Error(data.message);
         }
@@ -51,7 +54,7 @@ const getData = async (loc) => {
         const country = getCountryName(countryCode);
         return { city, country, temp, temp_min, temp_max, humidity, speed, main, icon, description, cloud, timezone, dt };
     } catch (err) {
-        return err;
+        throw err;
     }
 }
 
@@ -148,7 +151,8 @@ const main = async (current = inp.value) => {
 
         displayWeather(data);
     } catch (err) {
-        alert(err.message);
+        if (err.message) alert(err.message);
+        alert(err);
     } finally {
         loader.style.display = "none";
         detailSection.style.opacity = "100%";
