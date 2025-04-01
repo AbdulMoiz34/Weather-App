@@ -28,7 +28,6 @@ const getData = async (loc) => {
     try {
         let api;
         if (loc === true) {
-            debugger;
             const { longitude, latitude } = await currentLocation();
             api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`;
         } else {
@@ -37,7 +36,6 @@ const getData = async (loc) => {
 
         const res = await fetch(api);
         const data = await res.json();
-        debugger;
 
         if (data.message) {
             throw new Error(data.message);
