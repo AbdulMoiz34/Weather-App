@@ -150,7 +150,8 @@ const main = async (current = inp.value) => {
         displayWeather(data);
     } catch (err) {
         if (err.message) alert(err.message);
-        alert(err);
+        else alert(err);
+
     } finally {
         loader.style.display = "none";
         detailSection.style.opacity = "100%";
