@@ -51,7 +51,7 @@ const getData = async (loc) => {
         const country = getCountryName(countryCode);
         return { city, country, temp, temp_min, temp_max, humidity, speed, main, icon, description, cloud, timezone, dt };
     } catch (err) {
-        throw new Error(err);
+        return err;
     }
 }
 
@@ -84,6 +84,8 @@ const displayWeather = ({ city, country, temp, temp_min, temp_max, humidity, spe
     const cloudEl = document.getElementById("cloud");
     const weatherStatus = document.querySelector(".weather-status");
     const dateEl = document.getElementById("date&time");
+
+
     countryEl.innerText = `${city}, ${country}`;
     mainTempEl.innerText = `${temp}°C`;
     minTempEl.innerText = `${temp_min}°`;
@@ -100,49 +102,28 @@ const displayWeather = ({ city, country, temp, temp_min, temp_max, humidity, spe
 const changeBgImage = async (weather) => {
     let query = "";
     switch (weather) {
-        case "Clear":
-            query = "sunny sky";
-            break;
-        case "Clouds":
-            query = "cloudy sky";
-            break;
-        case "Rain":
-            query = "rainy weather";
-            break;
-        case "Thunderstorm":
-            query = "stormy sky";
-            break;
-        case "Snow":
-            query = "snowy landscape";
-            break;
+        case "Clear": query = "sunny sky"; break;
+        case "Clouds": query = "cloudy sky"; break;
+        case "Rain": query = "rainy weather"; break;
+        case "Thunderstorm": query = "stormy sky"; break;
+        case "Snow": query = "snowy landscape"; break;
         case "Mist":
-        case "Fog":
-            query = "foggy weather";
-            break;
-        case "Haze":
-            query = "hazy sky";
-            break;
-        case "Dust":
-            query = "dusty weather";
-            break;
-        case "Tornado":
-            query = "tornado sky";
-            break;
-        case "Squall":
-            query = "windy weather";
-            break;
-        case "Ash":
-            query = "volcanic ash";
-            break;
-        case "Blizzard":
-            query = "blizzard snowstorm";
-            break;
-        default:
-            query = "nature";
+        case "Fog": query = "foggy weather"; break;
+        case "Haze": query = "hazy sky"; break;
+        case "Dust": query = "dusty weather"; break;
+        case "Tornado": query = "tornado sky"; break;
+        case "Squall": query = "windy weather"; break;
+        case "Ash": query = "volcanic ash"; break;
+        case "Blizzard": query = "blizzard snowstorm"; break;
+        default: query = "nature";
     }
-    const res = await fetch(`https://api.unsplash.com/photos/random?query=${query}&client_id=${ACCESS_KEY}`);
-    const data = await res.json();
-    return data.urls.regular;
+    try {
+        const res = await fetch(`https://api.unsplash.com/photos/random?query=${query}&client_id=${ACCESS_KEY}`);
+        const data = await res.json();
+        return data.urls.regular;
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
 // for getting date and time
@@ -154,21 +135,25 @@ const getLocalDateTime = (offsetInSeconds) => {
 
 // main handler
 const main = async (current = inp.value) => {
+    const loader = document.getElementById("loader");
+    const detailSection = document.querySelector(".detail-section");
+
     try {
-        document.getElementById("loader").style.display = "block";
-        document.querySelector(".detail-section").style.opacity = "0%";
+        loader.style.display = "block";
+        detailSection.style.opacity = "0%";
+
         const data = await getData(current);
         const bgImageUrl = await changeBgImage(data.main);
         body.style.backgroundImage = `url(${bgImageUrl})`;
+
         displayWeather(data);
-        document.getElementById("loader").style.display = "none";
-        document.querySelector(".detail-section").style.opacity = "100%";
     } catch (err) {
         alert(err.message);
-        document.getElementById("loader").style.display = "none";
-        document.querySelector(".detail-section").style.opacity = "100%";
+    } finally {
+        loader.style.display = "none";
+        detailSection.style.opacity = "100%";
     }
-}
+};
 
 // ByDefault "true" for getting current location.
 main(true);
